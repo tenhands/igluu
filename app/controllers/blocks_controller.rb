@@ -33,7 +33,6 @@ class BlocksController < ApplicationController
         render :edit
       end
     end
-  end
 
   def destroy
     @block.destroy
