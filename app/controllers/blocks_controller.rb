@@ -4,7 +4,7 @@ class BlocksController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
 
   def index
-    @blocks = Block.all
+    @blocks = Block.all.order("created_at DESC")
   end
 
   def show
