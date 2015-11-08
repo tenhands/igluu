@@ -38,7 +38,6 @@ class BlocksController < ApplicationController
     @block.destroy
       redirect_to blocks_url
     end
-  end
 
   private
     # use callbacks to share common setup between actions
