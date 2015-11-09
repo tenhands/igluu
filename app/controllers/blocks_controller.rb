@@ -1,4 +1,5 @@
 class BlocksController < ApplicationController
+  # this runs before anything else
   before_action :set_block, only: [:show, :edit, :update, :destroy, :create]
   before_action :correct_user, only: [:edit, :update, :destroy]
   before_action :authenticate_user!, except: [:index, :show]
@@ -23,7 +24,7 @@ class BlocksController < ApplicationController
     @block.user_id = current_user.id
 
       if @block.save
-        
+
         render :show, notice: 'Block was successfully created.'
       else
         render :new
@@ -45,7 +46,7 @@ class BlocksController < ApplicationController
     end
 
   private
-    # use callbacks to share common setup between actions
+
     def set_block
       if params[:id]
         @block = Block.find(params[:id])
