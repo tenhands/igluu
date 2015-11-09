@@ -13,13 +13,18 @@
 
   <tbody>
     <% @blocks.each do |block| %>
+
       <tr>
         <td><%= block.description %></td>
         <td><%= link_to 'Show', block %></td>
-        <% if block.User == current_user %>
-        <td><%= link_to 'Edit', edit_block_path(block) %></td>
+        <% if current_user %>
+          <% if block.user_id != current_user.id %>
+
+          <% else %>
+          <td><%= link_to 'Edit', edit_block_path(block) %></td>
+          <td><%= link_to 'Destroy', block, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <% end %>
         <% end %>
-        <td><%= link_to 'Destroy', block, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>

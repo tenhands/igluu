@@ -1,31 +1,34 @@
 class BlocksController < ApplicationController
-  before_action :set_block, only: [:show, :edit, :update, :destroy]
+  before_action :set_block, only: [:show, :edit, :update, :destroy, :create]
   before_action :correct_user, only: [:edit, :update, :destroy]
   before_action :authenticate_user!, except: [:index, :show]
 
   def index
     @blocks = Block.all.order("created_at DESC")
+
   end
 
   def show
   end
 
   def new
-    @block = current_user.blocks.build
-  end
+    @block = Block.new
+    end
 
   def edit
   end
 
   def create
-    @block = current_user.blocks.build(block_params)
+    @block = Block.new(block_params)
+    @block.user_id = current_user.id
 
       if @block.save
-        redirect_to @block, notice: 'Block was successfully created.'
+        
+        render :show, notice: 'Block was successfully created.'
       else
         render :new
       end
-    end
+
   end
 
   def update
@@ -34,9 +37,9 @@ class BlocksController < ApplicationController
       else
         render :edit
       end
-    end
+  end
 
-  def destroy
+    def destroy
     @block.destroy
       redirect_to blocks_url
     end
@@ -44,14 +47,21 @@ class BlocksController < ApplicationController
   private
     # use callbacks to share common setup between actions
     def set_block
-      @block = Block.find_by(params[:id])
+      if params[:id]
+        @block = Block.find(params[:id])
+      end
     end
 
     def correct_user
       @block = current_user.blocks.find_by(id: params[:id])
-      redirect_to blocks_path, notice: "Not authorized to edit this pin" if @block.nil?
+      if !@block
+        redirect_to blocks_path, notice: "Not authorized to edit this pin" if @block.nil?
+      end
     end
+
+
     # allow only white list and block black list
     def block_params
-      params.require(:block).permit(:description)
+      params.require(:block).permit(:title, :description, :user_id)
     end
+  end
